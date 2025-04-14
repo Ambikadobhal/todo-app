@@ -1,8 +1,10 @@
 To-Do List App 📝
+
 Overview 🌟
 A simple to-do list application for organizing and managing your tasks. This responsive web app allows you to add, search, and delete tasks with a clean user interface.
 
 Features 🚀
+
 
 ✅ Add tasks quickly with a clean, user-friendly interface
 🔍 Search functionality to easily find specific tasks
