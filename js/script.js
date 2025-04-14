@@ -1,51 +1,46 @@
- const todoForm = document.getElementById('todoForm');
-        const todoTitleInput = document.getElementById('todoTitle');
-        const todoList = document.getElementById('todoList');
-        const searchInput = document.getElementById('searchInput');
-        const sortBtn = document.getElementById('sortBtn');
-        const emptyState = document.getElementById('emptyState');
+const todoForm = document.getElementById('todoForm');
+const todoTitleInput = document.getElementById('todoTitle');
+const todoList = document.getElementById('todoList');
+const searchInput = document.getElementById('searchInput');
+const sortBtn = document.getElementById('sortBtn');
+const emptyState = document.getElementById('emptyState');
 
-        // State
-        let todos = JSON.parse(localStorage.getItem('todos')) || [];
-        let sortDirection = 'asc'; // 'asc' or 'desc'
+let todos = JSON.parse(localStorage.getItem('todos')) || [];
+let sortDirection = 'asc'; 
 
-        // Functions
-        function saveTodos() {
-            localStorage.setItem('todos', JSON.stringify(todos));
-        }
+function saveTodos() {
+    localStorage.setItem('todos', JSON.stringify(todos));
+}
 
-        function formatDate(date) {
-            const options = { 
-                year: 'numeric', 
-                month: 'short', 
-                day: 'numeric',
-                hour: '2-digit',
-                minute: '2-digit'
-            };
-            return new Date(date).toLocaleDateString(undefined, options);
-        }
+function formatDate(date) {
+    const options = {
+        year: 'numeric',
+        month: 'short',
+        day: 'numeric',
+        hour: '2-digit',
+        minute: '2-digit'
+    };
+    return new Date(date).toLocaleDateString(undefined, options);
+}
 
-        function renderTodos(todosToRender = todos) {
-            // Check if we have any todos to display
-            if (todosToRender.length === 0) {
-                todoList.style.display = 'none';
-                emptyState.style.display = 'block';
-                return;
-            }
+function renderTodos(todosToRender = todos) {
+    if (todosToRender.length === 0) {
+        todoList.style.display = 'none';
+        emptyState.style.display = 'block';
+        return;
+    }
 
-            todoList.style.display = 'block';
-            emptyState.style.display = 'none';
-            
-            // Clear current list
-            todoList.innerHTML = '';
-            
-            // Render todos
-            todosToRender.forEach(todo => {
-                const li = document.createElement('li');
-                li.className = 'todo-item';
-                li.dataset.id = todo.id;
-                
-                li.innerHTML = `
+    todoList.style.display = 'block';
+    emptyState.style.display = 'none';
+
+    todoList.innerHTML = '';
+
+    todosToRender.forEach(todo => {
+        const li = document.createElement('li');
+        li.className = 'todo-item';
+        li.dataset.id = todo.id;
+
+        li.innerHTML = `
                     <div class="todo-info">
                         <div class="todo-title">${todo.title}</div>
                         <div class="todo-date">Created: ${formatDate(todo.createdAt)}</div>
@@ -57,94 +52,91 @@
                         </svg>
                     </button>
                 `;
-                
-                todoList.appendChild(li);
-            });
-        }
 
-        function addTodo(title) {
-            const newTodo = {
-                id: Date.now().toString(),
-                title: title.trim(),
-                createdAt: new Date().toISOString()
-            };
-            
-            todos.unshift(newTodo); // Add to beginning of array
-            saveTodos();
-            renderTodos();
-            todoTitleInput.value = ''; // Clear input
-        }
+        todoList.appendChild(li);
+    });
+}
 
-        function deleteTodo(id) {
-            todos = todos.filter(todo => todo.id !== id);
-            saveTodos();
-            renderTodos();
-        }
+function addTodo(title) {
+    const newTodo = {
+        id: Date.now().toString(),
+        title: title.trim(),
+        createdAt: new Date().toISOString()
+    };
 
-        function searchTodos(query) {
-            if (!query) {
-                renderTodos();
-                return;
-            }
-            
-            const filteredTodos = todos.filter(todo => 
-                todo.title.toLowerCase().includes(query.toLowerCase())
-            );
-            
-            renderTodos(filteredTodos);
-        }
+    todos.unshift(newTodo); 
+    saveTodos();
+    renderTodos();
+    todoTitleInput.value = ''; 
+}
 
-        function sortTodos() {
-            // Toggle sort direction
-            sortDirection = sortDirection === 'asc' ? 'desc' : 'asc';
-            
-            // Update button text
-            sortBtn.textContent = sortDirection === 'asc' ? 'Sort A-Z' : 'Sort Z-A';
-            
-            // Sort todos
-            todos.sort((a, b) => {
-                const titleA = a.title.toLowerCase();
-                const titleB = b.title.toLowerCase();
-                
-                if (sortDirection === 'asc') {
-                    return titleA < titleB ? -1 : titleA > titleB ? 1 : 0;
-                } else {
-                    return titleA > titleB ? -1 : titleA < titleB ? 1 : 0;
-                }
-            });
-            
-            saveTodos();
-            renderTodos();
-        }
+function deleteTodo(id) {
+    todos = todos.filter(todo => todo.id !== id);
+    saveTodos();
+    renderTodos();
+}
 
-        // Event Listeners
-        todoForm.addEventListener('submit', (e) => {
-            e.preventDefault();
-            const title = todoTitleInput.value.trim();
-            
-            if (title) {
-                addTodo(title);
-            } else {
-                // Shake the input to indicate error
-                todoTitleInput.classList.add('shake');
-                setTimeout(() => {
-                    todoTitleInput.classList.remove('shake');
-                }, 500);
-            }
-        });
-
-        todoList.addEventListener('click', (e) => {
-            if (e.target.closest('.delete-btn')) {
-                const id = e.target.closest('.delete-btn').dataset.id;
-                deleteTodo(id);
-            }
-        });
-
-        searchInput.addEventListener('input', (e) => {
-            searchTodos(e.target.value);
-        });
-
-        sortBtn.addEventListener('click', sortTodos);
-
-        // Initial render
+function searchTodos(query) {
+    if (!query) {
         renderTodos();
+        sortBtn.disabled = false;
+        return;
+    }
+
+    const filteredTodos = todos.filter(todo =>
+        todo.title.toLowerCase().includes(query.toLowerCase())
+    );
+
+    renderTodos(filteredTodos);
+
+    sortBtn.disabled = filteredTodos.length === 0;
+}
+
+function sortTodos() {
+    sortDirection = sortDirection === 'asc' ? 'desc' : 'asc';
+
+    sortBtn.textContent = sortDirection === 'asc' ? 'Sort A-Z' : 'Sort Z-A';
+
+    todos.sort((a, b) => {
+        const titleA = a.title.toLowerCase();
+        const titleB = b.title.toLowerCase();
+
+        if (sortDirection === 'asc') {
+            return titleA < titleB ? -1 : titleA > titleB ? 1 : 0;
+        } else {
+            return titleA > titleB ? -1 : titleA < titleB ? 1 : 0;
+        }
+    });
+
+    saveTodos();
+    renderTodos();
+}
+
+todoForm.addEventListener('submit', (e) => {
+    e.preventDefault();
+    const title = todoTitleInput.value.trim();
+
+    if (title) {
+        addTodo(title);
+    } else {
+        todoTitleInput.classList.add('shake');
+        setTimeout(() => {
+            todoTitleInput.classList.remove('shake');
+        }, 500);
+    }
+});
+
+todoList.addEventListener('click', (e) => {
+    if (e.target.closest('.delete-btn')) {
+        const id = e.target.closest('.delete-btn').dataset.id;
+        deleteTodo(id);
+    }
+});
+
+searchInput.addEventListener('input', (e) => {
+    searchTodos(e.target.value);
+});
+
+sortBtn.addEventListener('click', sortTodos);
+
+renderTodos();
