@@ -7,18 +7,13 @@ Features 🚀
 
 
 ✅ Add tasks quickly with a clean, user-friendly interface
-
 🔍 Search functionality to easily find specific tasks
-
 🔤 Sort tasks alphabetically with a single click
-
 🗑️ Delete tasks with a simple click on the delete icon
-
 💫 Smooth animations for a polished user experience
-
 📱 Fully responsive design that works on mobile and desktop devices
-
 🌈 Customizable color scheme using CSS variables.
+
 
 How to Use 📖
 
@@ -29,8 +24,6 @@ Searching: Type in the search field to filter tasks
 Sorting: Click "Sort A-Z" to sort tasks alphabetically
 
 Deleting a Task: Click the delete icon next to any task
-
-
 
 
 Technical Details 🔧
