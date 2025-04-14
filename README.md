@@ -31,6 +31,8 @@ Sorting: Click "Sort A-Z" to sort tasks alphabetically
 Deleting a Task: Click the delete icon next to any task
 
 
+
+
 Technical Details 🔧
 
 Built with vanilla HTML, CSS, and JavaScript - no frameworks required
@@ -43,9 +45,13 @@ Implements responsive design principles for all device sizes
 
 Local storage integration for persistent task management
 
+
+
 Try it Online 💻
 
 You can try the To-Do List application online by following this link: To-Do List App
+
+
 
 Feedback and Support 💌
 
