@@ -18,11 +18,8 @@ Features 🚀
 How to Use 📖
 
 Adding a Task: Type in the input field and click "Add Task" or press Enter
-
 Searching: Type in the search field to filter tasks
-
 Sorting: Click "Sort A-Z" to sort tasks alphabetically
-
 Deleting a Task: Click the delete icon next to any task
 
 
